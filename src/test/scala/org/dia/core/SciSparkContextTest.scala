@@ -1,6 +1,5 @@
 package org.dia.core
 
-import org.apache.spark.{SparkConf, SparkContext}
 import org.scalatest.FunSuite
 
 /**

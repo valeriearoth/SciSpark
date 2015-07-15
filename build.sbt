@@ -3,13 +3,15 @@ name := "SciSparkTestExperiments"
 version := "1.0"
 
 //scalaVersion := "2.11.6"
-scalaVersion := "2.10.4"
+scalaVersion := "2.10.5"
 
 mainClass in Compile := Some("org.dia.Main")
 
 resolvers ++= Seq(
   Resolver.mavenLocal
 )
+
+//ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) }
 
 val buildSettings = Defaults.coreDefaultSettings ++ Seq {
   javaOptions += "-Xms4000M -Xmx5024M -Xss1M -XX:MaxPermSize=256M"
@@ -36,7 +38,7 @@ libraryDependencies ++= Seq(
   // native libraries greatly improve performance, but increase jar sizes.
   "org.scalanlp" %% "breeze-natives" % "0.11.2",
   // Nd4j scala api with netlib-blas backend
-  "org.nd4j" % "nd4j-scala-api" % "0.0.3.5.5.6-SNAPSHOT",
+  "org.nd4j" % "nd4s_2.10" % "0.0.3.5.5.6-SNAPSHOT",
   "org.nd4j" % "nd4j-x86" % "0.0.3.5.5.6-SNAPSHOT",
   "edu.ucar" % "opendap" % "2.2.2",
   "joda-time" % "joda-time" % "2.8.1",
