@@ -20,6 +20,8 @@ package org.dia.b
 import breeze.linalg.{DenseMatrix, sum}
 import org.dia.NetCDFUtils
 import org.dia.TRMMUtils.Constants._
+import org.dia.core.ArrayLib
+import org.slf4j.Logger
 import ucar.ma2
 import ucar.nc2.dataset.NetcdfDataset
 
@@ -30,7 +32,10 @@ import scala.language.implicitConversions
  * Functions needed to perform operations with Breeze
  * We map every dimension to an index ex : dimension 1 -> Int 1, dimension 2 -> Int 2 etc.
  */
-object BreezeFuncs {
+object BreezeLib extends ArrayLib{
+
+  // Class logger
+  val LOG : Logger = org.slf4j.LoggerFactory.getLogger(this.getClass)
 
   /**
    * Breeze implementation
@@ -41,8 +46,8 @@ object BreezeFuncs {
   def getNetCDFTRMMVars (url : String, variable : String) : DenseMatrix[Double] = {
     val netcdfFile = NetCDFUtils.loadNetCDFDataSet(url)
 
-    val rowDim = NetCDFUtils.getDimensionSize(netcdfFile, TRMM_Y_AXIS_NAMES(0))
-    val columnDim = NetCDFUtils.getDimensionSize(netcdfFile, TRMM_X_AXIS_NAMES(0))
+    val rowDim = NetCDFUtils.getDimensionSize(netcdfFile, X_AXIS_NAMES(0))
+    val columnDim = NetCDFUtils.getDimensionSize(netcdfFile, Y_AXIS_NAMES(0))
 
     val coordinateArray = NetCDFUtils.convertMa2ArrayTo1DJavaArray(netcdfFile, variable)
     val matrix = new DenseMatrix[Double](rowDim, columnDim, coordinateArray, 0)
@@ -103,10 +108,16 @@ object BreezeFuncs {
    */
   def create2dArray(dimensionSizes: mutable.HashMap[Int, Int], netcdfFile: NetcdfDataset, variable: String): DenseMatrix[Double] = {
     //TODO make sure that the dimensions are always in the order we want them to be
-    val x = dimensionSizes.get(1).get
-    val y = dimensionSizes.get(2).get
-    val coordinateArray = NetCDFUtils.convertMa2ArrayTo1DJavaArray(netcdfFile, variable)
-    new DenseMatrix[Double](x, y, coordinateArray)
+    try {
+      val x = dimensionSizes.get(1).get
+      val y = dimensionSizes.get(2).get
+      val coordinateArray = NetCDFUtils.convertMa2ArrayTo1DJavaArray(netcdfFile, variable)
+      new DenseMatrix[Double](x, y, coordinateArray)
+    } catch {
+      case e :
+        java.util.NoSuchElementException => LOG.error("Required dimensions not found. Found:%s".format(dimensionSizes.toString()))
+        null
+    }
   }
 
   /**

@@ -17,13 +17,21 @@
  */
 package org.dia
 
+import breeze.linalg.{DenseMatrix, sum}
+import org.apache.spark.{SparkConf, SparkContext}
+import org.dia.TRMMUtils.Constants._
 import org.dia.core.SciSparkContext
 import org.dia.n.Nd4jFuncs
-import org.nd4j.api.linalg.DSL._
+import org.jblas.DoubleMatrix
+import org.nd4j.linalg.api.ndarray.INDArray
+import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.indexing.BooleanIndexing
 import org.nd4j.linalg.indexing.conditions.Conditions
 import org.nd4j.linalg.indexing.functions.Identity
-//import scala.language.implicitConversions
+import ucar.ma2
+import ucar.nc2.dataset.NetcdfDataset
+
+import scala.language.implicitConversions
 
 /**
  * Created by rahulsp on 6/17/15.
@@ -43,19 +51,16 @@ object Main {
     //val cores = Runtime.getRuntime().availableProcessors() - 1;
     //TODO the number of threads should be configured at cluster level
     val scisparkContext = new SciSparkContext("local[4]", "test")
-    val HighResolutionArray = scisparkContext.OpenDapURLFile("TestLinks", "TotCldLiqH2O_A")
+//    val HighResolutionArray = scisparkContext.OpenDapURLFile("TestLinks", "TotCldLiqH2O_A")
     /**
      * Uncomment this line in order to test on a normal scala array
      * val urlRDD = Source.fromFile("TestLinks").mkString.split("\n")
      */
 
-    val LowResolutionArray = HighResolutionArray.map(largeArray => Nd4jFuncs.reduceResolution(largeArray, 5))
-    val MaskedArray = LowResolutionArray.map(array => {
-      BooleanIndexing.applyWhere(array, Conditions.lessThanOrEqual(241.0), new Identity())
-      array
-    }).collect
+//    val LowResolutionArray = HighResolutionArray.map(largeArray => Nd4jFuncs.reduceResolution(largeArray, 5)).collect
+//    val MaskedArray = LowResolutionArray.map(array => BooleanIndexing.applyWhere(array, Conditions.lessThanOrEqual(241.toDouble), Identity))
     //val collected = HighResolutionArray.collect
-    MaskedArray.map(p => println(p))
+//    MaskedArray.map(p => println(p))
   }
 }
 

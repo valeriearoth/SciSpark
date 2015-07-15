@@ -15,21 +15,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.dia.TRMMUtils
+package org.dia.core
 
-import java.nio.file.{Files, Paths}
+import org.joda.time.DateTime
 
-import org.scalatest.{FunSuite, Ignore}
+import scala.collection.mutable.ListBuffer
+import scala.language.implicitConversions
 
 /**
- * Testing for the OpenDapTRMM link creator works
+ * Functions needed to map keys to values
  */
-@Ignore
-class OpenDapTRMMURLGenerator_Test extends FunSuite {
+object Groupers {
 
-  test("testLinkGeneration") {
-    OpenDapTRMMURLGenerator.run(false, "testLinkfile.txt")
-    assert(Files.exists(Paths.get("testLinkfile.txt")))
+  /**
+   * Sort of an identity mapping
+   * @param key
+   * @param value
+   * @return
+   */
+  //TODO better name?
+  def mapDayUrls(key: Any, value: Any) : ListBuffer[String] = {
+    var urls = new ListBuffer[String]
+    val actualValue = value.asInstanceOf[ListBuffer[String]]
+    val actualKey = key.asInstanceOf[DateTime]
+    actualValue
   }
 
+  //TODO better name?
+  def mapUrls(key:Any, value:Any) : ListBuffer[String] = {
+    var urls = new ListBuffer[String]
+    val actualKey = key.asInstanceOf[Int]
+    val actualValue = value.asInstanceOf[String]
+    urls+=actualValue
+    urls
+  }
 }
+

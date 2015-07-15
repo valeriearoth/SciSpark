@@ -19,6 +19,7 @@ package org.dia.n
 
 import org.dia.NetCDFUtils
 import org.dia.TRMMUtils.Constants._
+import org.dia.core.ArrayLib
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.factory.Nd4j
 import ucar.nc2.dataset.NetcdfDataset
@@ -30,7 +31,7 @@ import scala.language.implicitConversions
  * The Nd4j Functional operations
  * Created by rahulsp on 7/6/15.
  */
-object Nd4jFuncs {
+object Nd4jLib extends ArrayLib{
 
   /**
    * Gets an NDimensional Array of ND4j
@@ -41,8 +42,8 @@ object Nd4jFuncs {
   def getNetCDFTRMMVars(url: String, variable: String): INDArray = {
     val netcdfFile = NetCDFUtils.loadNetCDFDataSet(url)
 
-    val rowDim = NetCDFUtils.getDimensionSize(netcdfFile, TRMM_Y_AXIS_NAMES(0))
-    val columnDim = NetCDFUtils.getDimensionSize(netcdfFile, TRMM_X_AXIS_NAMES(0))
+    val rowDim = NetCDFUtils.getDimensionSize(netcdfFile, X_AXIS_NAMES(0))
+    val columnDim = NetCDFUtils.getDimensionSize(netcdfFile, Y_AXIS_NAMES(0))
 
     val coordinateArray = NetCDFUtils.convertMa2ArrayTo1DJavaArray(netcdfFile, variable)
     val NDArray = Nd4j.create(coordinateArray, Array(rowDim, columnDim))
@@ -68,9 +69,10 @@ object Nd4jFuncs {
    */
   def getNetCDFNDVars(netcdfFile: NetcdfDataset, variable: String): INDArray = {
     val coordinateArray = NetCDFUtils.convertMa2ArrayTo1DJavaArray(netcdfFile, variable)
-    val shape = NetCDFUtils.getDimensionSizes(netcdfFile, variable).toArray.sortBy(_._1).map(_._2)
-
-    Nd4j.create(coordinateArray, shape)
+    val dims = NetCDFUtils.getDimensionSizes(netcdfFile, variable)
+    val shape = dims.toArray.sortBy(_._1).map(_._2)
+    val ar = Nd4j.create(coordinateArray, shape)
+    ar
   }
 
   /**

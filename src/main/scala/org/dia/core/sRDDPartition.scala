@@ -15,21 +15,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.dia.TRMMUtils
+package org.dia.core
 
-import java.nio.file.{Files, Paths}
+import org.apache.spark.Partition
 
-import org.scalatest.{FunSuite, Ignore}
+import scala.collection.mutable.ListBuffer
+import scala.reflect.ClassTag
 
 /**
- * Testing for the OpenDapTRMM link creator works
+ * Created by marroquin on 7/13/15.
  */
-@Ignore
-class OpenDapTRMMURLGenerator_Test extends FunSuite {
+class sRDDPartition[T: ClassTag] (
+                              idx: Int,
+                              val dataset: List[T]
+                              ) extends Partition {
+  /**
+   * Partition index
+   */
+  override def index: Int = idx
 
-  test("testLinkGeneration") {
-    OpenDapTRMMURLGenerator.run(false, "testLinkfile.txt")
-    assert(Files.exists(Paths.get("testLinkfile.txt")))
+  /**
+   * To string method
+   * @return String
+   */
+  override def toString() = {
+    val sb = new StringBuilder
+    sb.append("{idx:").append(idx).append(",")
+    sb.append("urls:").append(dataset).append("}")
+    sb.toString
   }
-
 }
