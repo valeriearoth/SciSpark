@@ -17,10 +17,12 @@
  */
 package org.dia
 
+import org.dia.TensorLibrary.BreezeWrapper.BreezeLib
+import org.dia.TensorLibrary.BreezeWrapper.BreezeLoader._
 import org.dia.core.SciSparkContext
 
 import scala.language.implicitConversions
-
+import org.dia.core.DataObject
 /**
  * Created by rahulsp on 6/17/15.
  */
@@ -38,7 +40,8 @@ object Main {
   def main(args: Array[String]): Unit = {
     //val cores = Runtime.getRuntime().availableProcessors() - 1;
     //TODO the number of threads should be configured at cluster level
-    val scisparkContext = new SciSparkContext("local[4]", "test")
+    //val scisparkContext = new SciSparkContext("local[4]", "test")
+    new DataObject(new BreezeLib(loadNetCDFTRMMVars("", "")))
 //    val HighResolutionArray = scisparkContext.OpenDapURLFile("TestLinks", "TotCldLiqH2O_A")
     /**
      * Uncomment this line in order to test on a normal scala array

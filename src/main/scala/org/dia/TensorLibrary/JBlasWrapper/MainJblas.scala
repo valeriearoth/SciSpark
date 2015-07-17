@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.dia.MatrixLibrary.JBlasWrapper
+package org.dia.TensorLibrary.JBlasWrapper
 
 import org.apache.spark.{SparkConf, SparkContext}
 import org.dia.TRMMUtils.NetCDFUtils
