@@ -41,10 +41,10 @@ object Main {
     val variables = NetCDFLoader.loadNetCDFVariables(args(0))
     println(variables)
 
-    val loadStart = System.currentTimeMillis() * 1000
+    val loadStart = System.currentTimeMillis() / 1000.0
     val tuples = NetCDFLoader.loadNetCDFNDVars(args(0), "tasmax")
     val breezeArrays = new BreezeTensor((tuples._1, tuples._2))
-    val loadEnd = System.currentTimeMillis() * 1000
+    val loadEnd = System.currentTimeMillis() / 1000.0
     println(breezeArrays.tensor.rows + " " + breezeArrays.tensor.cols)
     println("Loaded all variables")
     println((loadEnd - loadStart))
