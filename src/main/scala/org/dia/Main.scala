@@ -20,7 +20,7 @@ package org.dia
 import org.dia.Constants._
 import org.dia.core.{SciSparkContext, sciTensor}
 import org.dia.loaders.NetCDFLoader
-import org.dia.tensors.BreezeTensor
+import org.dia.tensors.{Nd4jTensor, BreezeTensor}
 
 import scala.language.implicitConversions
 
@@ -43,11 +43,13 @@ object Main {
 
     val loadStart = System.currentTimeMillis() / 1000.0
     val tuples = NetCDFLoader.loadNetCDFNDVars(args(0), "tasmax")
-    val breezeArrays = new BreezeTensor((tuples._1, tuples._2))
+    val loadEnder = System.currentTimeMillis() / 1000.0
+    val breezeArrays = new Nd4jTensor((tuples._1, tuples._2))
     val loadEnd = System.currentTimeMillis() / 1000.0
-    println(breezeArrays.tensor.rows + " " + breezeArrays.tensor.cols)
+    println(breezeArrays.tensor.rows + " " + breezeArrays.tensor.columns)
     println("Loaded all variables")
-    println((loadEnd - loadStart))
+    println("Copying variables into 1d array" + (loadEnder - loadStart))
+    println("Copying 1d array into ind array" + ((loadEnd - loadEnder)))
     println(breezeArrays)
     //val breezeTense = new BreezeTensor(arrayTuple._1, arrayTuple._2)
   }
