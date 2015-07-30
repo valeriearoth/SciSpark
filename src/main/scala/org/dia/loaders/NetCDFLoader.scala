@@ -51,7 +51,6 @@ object NetCDFLoader {
    */
   def loadNetCDFNDVars(url: String, variable: String): (Array[Double], Array[Int]) = {
     val netcdfFile = NetCDFUtils.loadNetCDFDataSet(url)
-
     if (netcdfFile != null) {
       val coordinateArray = NetCDFUtils.convertMa2ArrayTo1DJavaArray(netcdfFile, variable)
       if (coordinateArray.length > 0) {

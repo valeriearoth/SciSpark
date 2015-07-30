@@ -19,6 +19,8 @@ package org.dia
 
 import org.dia.Constants._
 import org.dia.core.{SciSparkContext, sciTensor}
+import org.dia.loaders.NetCDFLoader
+import org.dia.tensors.BreezeTensor
 
 import scala.language.implicitConversions
 
@@ -36,27 +38,18 @@ object Main {
 
 
   def main(args: Array[String]): Unit = {
-    var master = "";
-    var testFile = if (args.isEmpty) "TestLinks" else args(1)
-    if(args.isEmpty) master = "local[4]" else master = args(0)
+    val variables = NetCDFLoader.loadNetCDFVariables(args(0))
+    println(variables)
 
-    val sc = new SciSparkContext(master, "test")
-
-    sc.setLocalProperty(ARRAY_LIB, ND4J_LIB)
-
-    val variable = if(args.isEmpty) "TotCldLiqH2O_A" else args(2)
-
-    val sRDD = sc.NetcdfFile(testFile, List(variable))
-
-    val preCollected = sRDD.map(p => p(variable).reduceResolution(5))
-
-    val filtered = preCollected.map(p => p(variable) <= 241.0)
-
-    val Sliced = filtered.map(p => p(variable)(4 -> 9, 2 -> 5))
-
-    val collected: Array[sciTensor] = Sliced.collect
-
-    println(collected.toList)
+    val loadStart = System.nanoTime()
+    val tuples = NetCDFLoader.loadNetCDFNDVars(args(0), "tasmax")
+    val breezeArrays = new BreezeTensor((tuples._1, tuples._2))
+    val loadEnd = System.nanoTime()
+    println(breezeArrays.tensor.rows + " " + breezeArrays.tensor.cols)
+    println("Loaded all variables")
+    println((loadEnd - loadStart) * 10E6)
+    println(breezeArrays)
+    //val breezeTense = new BreezeTensor(arrayTuple._1, arrayTuple._2)
   }
 }
 
