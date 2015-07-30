@@ -45,6 +45,7 @@ object Main {
     val tuples = NetCDFLoader.loadNetCDFNDVars(args(0), "tasmax")
     val loadEnder = System.currentTimeMillis() / 1000.0
     println("Copying variables into 1d array" + (loadEnder - loadStart))
+    println("The dimensions" + tuples._2.toList)
     val loadEnde = System.currentTimeMillis() / 1000.0
     val breezeArrays = new Nd4jTensor((tuples._1, tuples._2))
     val loadEnd = System.currentTimeMillis() / 1000.0
