@@ -49,7 +49,6 @@ object Main {
     val loadEnde = System.currentTimeMillis() / 1000.0
     val breezeArrays = new Nd4jTensor((tuples._1, tuples._2))
     val loadEnd = System.currentTimeMillis() / 1000.0
-    println(breezeArrays.tensor.rows + " " + breezeArrays.tensor.columns)
     println("Loaded all variables")
     println("Copying 1d array into ind array" + ((loadEnd - loadEnde)))
     println(breezeArrays)
