@@ -21,6 +21,7 @@ import org.dia.Constants._
 import org.dia.core.{SciSparkContext, sciTensor}
 import org.dia.loaders.NetCDFLoader
 import org.dia.tensors.{Nd4jTensor, BreezeTensor}
+import org.nd4j.linalg.factory.Nd4j
 
 import scala.language.implicitConversions
 
@@ -52,6 +53,14 @@ object Main {
     println("Loaded all variables")
     println("Copying 1d array into ind array" + ((loadEnd - loadEnde)))
     println(breezeArrays)
+
+    println("Finding min and max")
+    val minmaxstart = System.currentTimeMillis() / 1000.0
+    val k = Nd4j.min(breezeArrays.tensor)
+    val h = Nd4j.max(breezeArrays.tensor)
+    val minmaxend = System.currentTimeMillis() / 1000.0
+
+    println(minmaxend - minmaxstart)
     //val breezeTense = new BreezeTensor(arrayTuple._1, arrayTuple._2)
   }
 }
