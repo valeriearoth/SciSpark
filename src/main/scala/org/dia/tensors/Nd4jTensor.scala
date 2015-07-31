@@ -39,6 +39,10 @@ class Nd4jTensor(val tensor: INDArray) extends AbstractTensor {
     this(Nd4j.create(shapePair._1, shapePair._2))
   }
 
+  def this(shapePair: (Array[Float], Array[Int])) {
+    this(Nd4j.create(shapePair._1, shapePair._2))
+  }
+
   def this(loadFunc: () => (Array[Double], Array[Int])) {
     this(loadFunc())
   }

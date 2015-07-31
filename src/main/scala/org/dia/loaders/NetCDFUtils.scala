@@ -41,7 +41,7 @@ object NetCDFUtils {
   def loadNetCDFDataSet(url: String): NetcdfDataset = {
     NetcdfDataset.setUseNaNs(false)
     try {
-      var netcdfFile = NetcdfDataset.openDataset(url)
+      val netcdfFile = NetcdfDataset.openDataset(url)
       netcdfFile
     } catch {
       case e: java.io.IOException => LOG.error("Couldn't open dataset %s".format(url))
@@ -66,10 +66,10 @@ object NetCDFUtils {
       return coordinateArray
     }
 
-    val oneDarray = SearchVariable.copyTo1DJavaArray()
+    val oneDarray = SearchVariable.get1DJavaArray(Class[Double])
     // convert to doubles
     try {
-      if (!SearchVariable.copyTo1DJavaArray().isInstanceOf[Array[Double]]) {
+      if (!oneDarray.isInstanceOf[Array[Double]]) {
         coordinateArray = oneDarray.asInstanceOf[Array[Float]]
           .map(p => p.toDouble)
       }
