@@ -66,7 +66,7 @@ object NetCDFUtils {
       return coordinateArray
     }
 
-    val oneDarray = SearchVariable.get1DJavaArray(Class[Double])
+    val oneDarray = SearchVariable.get1DJavaArray(classOf[Double])
     // convert to doubles
     try {
       if (!oneDarray.isInstanceOf[Array[Double]]) {
