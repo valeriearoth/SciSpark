@@ -42,7 +42,7 @@ object Main {
     val variables = NetCDFLoader.loadNetCDFVariables(args(0))
     println(variables)
 
-    val loadStart = System.currentTimeMillis() / 1000.0
+    val loadStart = System.currentTimeMillis() / 1000
     val tuples = NetCDFLoader.loadNetCDFNDVars(args(0), "tasmax")
     val loadEnder = System.currentTimeMillis() / 1000.0
     println("Copying variables into 1d array" + (loadEnder - loadStart))
